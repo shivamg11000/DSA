@@ -137,20 +137,6 @@ class List{       // LinkedList
             head = current;
 
         }
-        void merge(int l, int mid, int r){
-
-        }
-        void mergeSort(int l, int r){
-            if (l < r) {
-                int middle = (l+r)/2;
-                mergeSort(l, middle);
-                mergeSort(middle+1, r);
-                merge(l, middle, r);
-            }
-        }
-        void sort(){
-            mergeSort(0, size-1);        
-        }
         void display(){
             Node *current = head;
             while(current!=NULL){
