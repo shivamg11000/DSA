@@ -27,6 +27,7 @@ class Stack{
         void push(Node *node){
             node->next = top;
             top = node;
+            cout<<node->val<<" pushed to stack\n";
         }
         Node *pop(void){
             if (isEmpty())

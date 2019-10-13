@@ -1,74 +1,67 @@
-// Stack using Linked List
-
-// Push, Pop, Peek or Top, isEmpty are basic opeartions on a stack
-
+// predefined stack used 
 
 #include <iostream>
+#include <stack>
 using namespace std;
 
-class Node{
-    public:
-        int val;
-        Node *next;
 
-        Node(int val){
-            this->val = val;
-            this->next = NULL;
+bool isParaBalanced(string str) {
+    stack<char> s;
+    char c;
+    
+    for (int i=0 ; i<str.length() ; i++) {
+        c = str[i];
+        if (c=='(' || c=='[' || c=='{') {
+            s.push(c);
         }
-};
+        else if (c==')' || c==']' || c=='}') {
+            if (s.empty())
+                return false;
+ 
+            switch(c){
+                case ')': 
+                    if (s.top()!='(')
+                        return false;
+                    break;
+                case ']': 
+                    if (s.top()!='[')
+                        return false;
+                    break;
+                case '}': 
+                    if (s.top()!='{')
+                        return false;
+                    break;    
+            }   
+            s.pop();                   // deletes the top of the element, does not return it here
+        }
+        else {
+            cout<<"Worng character in string\n";
+            return 0;
+        }
+    }
 
-class Stack{
-    public:
-        Node *top;
-
-        Stack(){
-            this->top = NULL;
-        }
-        void push(Node *node){
-            node->next = top;
-            top = node;
-        }
-        Node *pop(void){
-            if (isEmpty())
-                return NULL;
-
-            Node *ptr = top;
-            top = top->next;
-            ptr->next = NULL;
-            return ptr;     
-        }
-        bool isEmpty(){
-            if (top==NULL)
-                return true;
-            return false;     
-        }
-        Node *peek(){     // top or peek
-            return top;
-        }
-};
-
+    if (!s.empty())
+        return false;
+    return true;     
+}
 
 int main(){
-    Stack stack;
     
-    cout<<"Is Stack empty? "<<stack.isEmpty()<<endl;
-    cout<<"Insert 2 into stack\n";
-    stack.push(new Node(2));
-    cout<<"Is Stack empty? "<<stack.isEmpty()<<endl;
-    cout<<"Top element\n"<<stack.peek()->val<<endl;
-    cout<<"Inserting 4 elements into stack [1,2,3,4]\n";
-    int ar[] = {1, 2, 3, 4};
-    for (int i=0 ; i<sizeof(ar)/sizeof(ar[0]) ; i++)
-        stack.push(new Node(ar[i]));
+    string str = "(())[]";
+    cout<<str;
+    cout<<endl;
+    if (isParaBalanced(str))
+        cout<<"Parenthesis are balanced\n";
+    else 
+        cout<<"Parenthesis are not balanced\n";    
 
-    cout<<"Top element\n"<<stack.peek()->val<<endl;
-    
-    cout<<"Popping 5 times\n";
-    for (int i=0 ; i<5 ; i++)
-        cout<<stack.pop()->val<<endl;
-
-
-    cout<<"Is Stack empty? "<<stack.isEmpty()<<endl;
+    str = "))(({}{";
+    cout<<str;
+    cout<<endl;
+    if (isParaBalanced(str))
+        cout<<"Parenthesis are balanced\n";
+    else 
+        cout<<"Parenthesis are not balanced\n";    
 
     return 0;
 }
