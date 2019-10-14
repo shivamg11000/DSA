@@ -19,32 +19,32 @@ class Node{
 
 class Stack{
     public:
-        Node *top;
+        Node *_top;
 
         Stack(){
-            this->top = NULL;
+            this->_top = NULL;
         }
-        void push(Node *node){
-            node->next = top;
-            top = node;
+        void push(int val){
+            Node *node = new Node(val);
+            node->next = _top;
+            _top = node;
             cout<<node->val<<" pushed to stack\n";
         }
-        Node *pop(void){
+        void pop(void){     // deletes top of the stack, but does not return it
             if (isEmpty())
-                return NULL;
+                return;
 
-            Node *ptr = top;
-            top = top->next;
-            ptr->next = NULL;
-            return ptr;     
+            Node *ptr = _top;
+            _top = _top->next;
+            delete ptr;    
         }
         bool isEmpty(){
-            if (top==NULL)
+            if (_top==NULL)
                 return true;
             return false;     
         }
-        Node *peek(){     // top or peek
-            return top;
+        int top(){     // returns top of the stack, stack remains unchanged
+            return _top->val;
         }
 };
 
@@ -54,19 +54,19 @@ int main(){
     
     cout<<"Is Stack empty? "<<stack.isEmpty()<<endl;
     cout<<"Insert 2 into stack\n";
-    stack.push(new Node(2));
+    stack.push(2);
     cout<<"Is Stack empty? "<<stack.isEmpty()<<endl;
-    cout<<"Top element\n"<<stack.peek()->val<<endl;
+    cout<<"Top element\n"<<stack.top()<<endl;
     cout<<"Inserting 4 elements into stack [1,2,3,4]\n";
     int ar[] = {1, 2, 3, 4};
     for (int i=0 ; i<sizeof(ar)/sizeof(ar[0]) ; i++)
-        stack.push(new Node(ar[i]));
+        stack.push(ar[i]);
 
-    cout<<"Top element\n"<<stack.peek()->val<<endl;
+    cout<<"Top element\n"<<stack.top()<<endl;
     
     cout<<"Popping 5 times\n";
     for (int i=0 ; i<5 ; i++)
-        cout<<stack.pop()->val<<endl;
+        stack.pop();
 
 
     cout<<"Is Stack empty? "<<stack.isEmpty()<<endl;
