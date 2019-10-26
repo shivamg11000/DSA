@@ -83,8 +83,8 @@ class List{       // LinkedList
                 newNode->next = head;
                 head = newNode;
             }
-            else if (current->next==NULL) {     // add at end
-                current->next = newNode;
+            else if (prev->next==NULL) {     // add after last element
+                prev->next = newNode;
             } 
             else if (i==index) {      // add in between
                 prev->next = newNode;
@@ -137,7 +137,13 @@ class List{       // LinkedList
             head = current;
 
         }
-        void display(){
+        void printReverse(Node *head){  // without reversing original list
+            if (head==NULL)
+                return;
+            printReverse(head->next);
+            cout<<head->data<<" ";        
+        }
+        void display(){                  // print List
             Node *current = head;
             while(current!=NULL){
                 cout<<current->data<<" ";
@@ -174,5 +180,6 @@ int main(){
     cout<<"LinkedList after reversing\n";
     list.reverse();
     list.display();
+
     return 0;
 } 
