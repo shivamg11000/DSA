@@ -1,6 +1,9 @@
 // A tree whose elements have at most 2 children is called a binary tree
+// preorder, inorder, postorder traversals comes in dfs
+
 
 #include <iostream>
+#include <queue>
 using namespace std;
 
 float max(float a, float b){ return a>b?a:b;}  // helper fn
@@ -54,6 +57,21 @@ class Btree{        // Biary tree
                 cout<<node->val<<" ";
             }
         }
+        void bfsPrint(Node *node){   // here node is root
+            queue<Node *> q;
+
+            q.push(node);
+            while(!q.empty()){
+                Node *cur = q.front();
+                q.pop();
+                cout<<cur->val<<" ";
+                if (cur->left != NULL)
+                    q.push(cur->left);
+                if (cur->right != NULL)
+                    q.push(cur->right);        
+            }
+            cout<<endl;
+        }
         int getHeight(Node *node){    // no of lvls + 1 = height , can be calculated by getting the longest path between root & leaf node
             if (node==NULL)
                 return 0;
@@ -82,12 +100,18 @@ int main(void){
     for (int i=0 ; i<sizeof(ar)/sizeof(ar[0]) ; i++)
         bt.insert(ar[i]);
 
+    // dfs
+    cout<<"dfs\n";
     bt.inorderPrint(bt.root);
     cout<<endl;
     bt.preorderPrint(bt.root);
     cout<<endl;
     bt.postorderPrint(bt.root);
     cout<<endl;
+
+    // bfs
+    cout<<"bfs\n";
+    bt.bfsPrint(bt.root);
 
     cout<<"height of a tree   :";
     cout<<bt.getHeight(bt.root);
