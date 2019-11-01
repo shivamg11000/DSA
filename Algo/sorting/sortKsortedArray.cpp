@@ -3,8 +3,9 @@
 // https://www.youtube.com/watch?v=yQ84lk-EXTQ
 
 
+// heap can also be used to get nth largest/smallest number
+
 #include <iostream>
-#include <vector>
 using namespace std;
 
 void swap(int *a, int *b){

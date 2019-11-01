@@ -1,6 +1,6 @@
 // A tree whose elements have at most 2 children is called a binary tree
 // preorder, inorder, postorder traversals comes in dfs
-
+// level order traverseal come in bfs
 
 #include <iostream>
 #include <queue>
@@ -20,19 +20,39 @@ class Node{
         }
 };
 
-class Btree{        // Biary tree
+class Btree{        // Binary tree
     public:
         Node *root;
         Btree(){
             root = NULL;
         }
+        // insertion can be done in any way in binary tree, its not a bst, but insertion in level order will make it complete binary tree
         void insert(int val){    // insert node into btree
             Node *node = new Node(val);
-            if (root==NULL)        // if tree empty
-                root = node;
-            else 
-                insert(root, node);
+            if (this->root==NULL) {       // if tree empty
+                this->root = node;
+                return;
+            }
+            queue<Node *> q;
+            q.push(this->root);
+            while(!q.empty()) {  // traverse tee in lvl order until found first node with left or right NULL
+                Node *cur = q.front();
+                if (cur->left==NULL){
+                    cur->left = node;
+                    break;
+                }
+                else if(cur->right==NULL){
+                    cur->right = node;
+                    break;    
+                }
+                q.pop();
+                if (cur->left!=NULL)
+                    q.push(cur->left);
+                if (cur->right!=NULL)
+                    q.push(cur->right);        
+            }    
         } 
+        // all dfs takes O(n)
         // Inorder traversing procedure (Left, Root, Right)
         void inorderPrint(Node *node){   // fn call done on root
             if (node!=NULL) {   
@@ -50,14 +70,14 @@ class Btree{        // Biary tree
             }
         }
         // Postorder (Left, Right, Root)
-        void postorderPrint(Node *node){
+        void postorderPrint(Node *node){   
             if (node!=NULL) {   
                 postorderPrint(node->left);
                 postorderPrint(node->right);
                 cout<<node->val<<" ";
             }
         }
-        void bfsPrint(Node *node){   // here node is root
+        void bfsPrint(Node *node){   // here node is root, O(n)
             queue<Node *> q;
 
             q.push(node);
@@ -77,20 +97,24 @@ class Btree{        // Biary tree
                 return 0;
             return 1 + (int) max(getHeight(node->left), getHeight(node->right));    
         }
-    private:
-        void insert(Node* root, Node* node){
-
-            // base cases    
-            if (node->val < root->val && root->left==NULL)         
-                root->left = node;
-            else if (node->val >= root->val && root->right==NULL) 
-                root->right = node;
-            // recursive steps
-            else if (node->val < root->val){   // lesser value to a node goes to the left
-                insert(root->left, node);
-            } else {                     // equal or greater goes to right
-                insert(root->right, node);
-            }   
+        void search(int key){    // traverse in lvl order & search a node by its value/key, O(n)
+           if (this->root==NULL)        // if tree empty
+                return;
+            queue<Node *> q;
+            q.push(this->root);
+            while(!q.empty()) {      // traverse tee in lvl order until found first matching node 
+                Node *cur = q.front();
+                q.pop();
+                if (cur->val == key){
+                    cout<<key<<" exists\n";
+                    return;  
+                }
+                if (cur->left!=NULL)
+                    q.push(cur->left);
+                if (cur->right!=NULL)
+                    q.push(cur->right);        
+            }    
+            cout<<key<<" does not exist\n";
         }
 };
 
@@ -120,6 +144,8 @@ int main(void){
     cout<<"No of lvls in tree :";
     cout<<bt.getHeight(bt.root)-1;
     cout<<endl;
+
+    bt.search(7);
 
     return 0;
 }
