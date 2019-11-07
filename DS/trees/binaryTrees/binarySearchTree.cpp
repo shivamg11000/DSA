@@ -1,6 +1,7 @@
 // A tree whose elements have at most 2 children is called a binary tree
 // A binary tree whoes left subtree containes lesser value & right subtree contain greater or equal values is called a binary search tree
 
+
 #include <iostream>
 #include <queue>
 using namespace std;
@@ -108,40 +109,7 @@ class BST{        // Binary Search tree
             printNthLevelNodes(root->left, lvl-1);
             printNthLevelNodes(root->right, lvl-1);
         }
-        // works in bottom up fasion, O(n)
-        bool isTreeBST(Node *root, int *count) {  // checks whether a tress is bst or not also counts no of bst subtrees, initially count=0
-            if (root==NULL) 
-                return false;
 
-            // recurive approach
-            bool isLeftSubTreeBST = isTreeBST(root->left, count);
-            bool isRightSubTreeBST = isTreeBST(root->right, count);
-            if (isLeftSubTreeBST && isRightSubTreeBST){
-                if ((root->val > root->left->val) && (root->val < root->right->val)){
-                    (*count)++;
-                    return true;
-                }   
-            }
-            // base cases are after recursive fn as we have to solve the problem in bottom up fashion, after recursive call is done the algo backtracks up
-            if (root->left==NULL && root->right==NULL){
-                (*count)++;
-                return true;
-            }
-            else if (root->left==NULL && (root->val < root->right->val)){
-                (*count)++;
-                return true;
-            }
-            else if (root->right==NULL && (root->val > root->left->val)){
-                (*count)++;
-                return true;
-            }
-            return false;    
-        }
-        int count_no_of_BST_subtrees(){
-            int count = 0;
-            isTreeBST(this->root, &count);
-            return count;
-        }
         int getHeight(Node *node){    // no of lvls + 1 = height , can be calculated by getting the longest path between root & leaf node
             if (node==NULL)
                 return 0;
@@ -186,10 +154,6 @@ int main(void){
 
     cout<<"3rd level nodes\n";
     bst.printNthLevelNodes(bst.root, 3);
-    cout<<endl;
-
-    cout<<"No of BST subtrees\n";
-    cout<<bst.count_no_of_BST_subtrees();
     cout<<endl;
 
     return 0;
